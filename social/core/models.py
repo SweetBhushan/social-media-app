@@ -40,5 +40,17 @@ class FollowersCount(models.Model):
     follower = models.CharField(max_length=100)
     user = models.CharField(max_length=100)
 
+class friend_request(models.Model):
+    from_user =models.ForeignKey(User,related_name='from_User',on_delete=models.CASCADE)
+
+    to_user=models.ForeignKey(User,related_name='to_User',on_delete=models.CASCADE)
+   
+   
+   
+   
+   
+   
+   
+   
     def __str__(self):
         return self.user

@@ -242,6 +242,29 @@ def signin(request):
         return render(request, 'signin.html')
 
 @login_required(login_url='signin')
+def send_friend_request(request,username):
+    from_user=request.user
+    to_user=User.objects.get(username=username)
+    friend_request,created=friend_request.objects.get_or_create(from_user=from_user,to_user=to_user)
+    if created:
+        return HttpResponse('/profile/')
+    else:
+        return HttpResponse('/profile/'+User)
+
+
+def accept_friend_request(request,requestusername):
+    friend_request=friend_request.objects.get(username=requestusername)
+    if friend_request.to_user==request.user:
+        friend_request.to_user.friends.add(friend_request.from_user)
+        friend_request.from_user.friends.add(friend_request.to_user)
+        friend_request.delete()
+        return HttpResponse('/profile/'+User)
+    else:
+        return HttpResponse('/profile/')    
+
+
+
+@login_required(login_url='signin')
 def logout(request):
     auth.logout(request)
     return redirect ('signin')
