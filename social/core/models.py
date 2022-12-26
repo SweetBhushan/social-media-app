@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
 from datetime import datetime
-
+from django.contrib.auth.models import AbstractBaseUser
 User = get_user_model()
 
 # Create your models here.
@@ -40,17 +40,16 @@ class FollowersCount(models.Model):
     follower = models.CharField(max_length=100)
     user = models.CharField(max_length=100)
 
-class friend_request(models.Model):
+    def __str__(self):
+        return self.user
+
+class User(AbstractBaseUser):
+    friends= models.ManyToManyField("User",blank=True)       
+
+class Friend_Request(models.Model):
     from_user =models.ForeignKey(User,related_name='from_User',on_delete=models.CASCADE)
 
     to_user=models.ForeignKey(User,related_name='to_User',on_delete=models.CASCADE)
-   
-   
-   
-   
-   
-   
-   
    
     def __str__(self):
         return self.user
